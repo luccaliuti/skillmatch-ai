@@ -1,0 +1,16 @@
+LUCCA SANTOS LIUTI
+Email: lucca.exemplo@gmail.com
+Telefone: (11) 91234-5678
+LinkedIn: https://www.linkedin.com/in/lucca-exemplo
+Endereço: Rua Exemplo, 123
+CPF: 123.456.789-10
+
+Resumo profissional
+Estagiário de Sustentação com experiência em atendimento ao usuário, análise de incidentes, documentação e suporte a sistemas corporativos.
+
+Experiência
+- Atendimento de chamados e troubleshooting
+- Apoio a sistemas ERP
+- Consultas em SQL básico
+- Criação de documentação técnica
+- Noções de ITIL e melhoria contínua

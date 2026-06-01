@@ -1,0 +1,11 @@
+Vaga: Analista de Suporte / Sustentação
+
+Responsável por suporte a sistemas corporativos, análise de incidentes, atendimento ao usuário, documentação e melhoria contínua.
+
+Requisitos:
+- SQL básico
+- Noções de ERP
+- Troubleshooting
+- ITIL
+- Boa comunicação
+- Documentação técnica
