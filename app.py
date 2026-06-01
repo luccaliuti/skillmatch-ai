@@ -114,7 +114,7 @@ def keyword_match(cv_text: str, keywords: str):
 # -----------------------------
 
 st.title("🟢 SKILLMATCH AI")
-st.caption("MVP acadêmico: anonimização de currículos e ranking por aderência à vaga.")
+
 
 with st.sidebar:
     st.header("Sobre o projeto")
@@ -122,7 +122,7 @@ with st.sidebar:
         "Este MVP demonstra uma plataforma web para reduzir vieses iniciais no recrutamento, "
         "removendo dados pessoais e calculando a aderência do candidato à vaga."
     )
-    st.info("Dica: para a apresentação, use 2 currículos diferentes para mostrar o ranking.")
+    
 
 col1, col2 = st.columns(2)
 
