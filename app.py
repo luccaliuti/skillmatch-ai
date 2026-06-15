@@ -21,201 +21,465 @@ except Exception:
     TfidfVectorizer = None
     cosine_similarity = None
 
-st.set_page_config(page_title="SKILLMATCH AI", page_icon="🟢", layout="wide")
 
-# =============================
-# CSS CUSTOMIZADO
-# =============================
-st.markdown("""
-<style>
-.stApp {
-    background: linear-gradient(135deg, #f8fafc 0%, #eef4ff 100%);
-    color: #0f172a;
-    font-family: 'Segoe UI', sans-serif;
-}
+# =========================================================
+# CONFIGURAÇÃO DA PÁGINA
+# =========================================================
+st.set_page_config(
+    page_title="SKILLMATCH AI",
+    page_icon="🟢",
+    layout="wide"
+)
 
-#MainMenu {visibility: hidden;}
-footer {visibility: hidden;}
-header {visibility: hidden;}
 
-.hero {
-    background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 100%);
-    padding: 32px 36px;
-    border-radius: 24px;
-    margin-bottom: 24px;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.18);
-}
+# =========================================================
+# CSS - DARK PREMIUM
+# =========================================================
+st.markdown(
+    """
+    <style>
+    /* =====================================================
+       BASE GERAL / FUNDO
+    ===================================================== */
+    .stApp {
+        background:
+            radial-gradient(circle at 10% 10%, rgba(37, 99, 235, 0.16), transparent 22%),
+            radial-gradient(circle at 85% 15%, rgba(14, 165, 233, 0.12), transparent 20%),
+            radial-gradient(circle at 30% 80%, rgba(59, 130, 246, 0.10), transparent 25%),
+            linear-gradient(135deg, #050b16 0%, #08111f 35%, #0b1730 70%, #0d1b38 100%);
+        color: #e5eefc;
+    }
 
-.hero h1 {
-    color: white;
-    font-size: 40px;
-    font-weight: 800;
-    margin: 0;
-}
+    #MainMenu {visibility: hidden;}
+    header {visibility: hidden;}
+    footer {visibility: hidden;}
 
-.hero p {
-    color: #dbeafe;
-    font-size: 17px;
-    margin-top: 10px;
-    margin-bottom: 0;
-    line-height: 1.5;
-}
+    .block-container {
+        max-width: 1180px;
+        padding-top: 1.8rem;
+        padding-bottom: 2.2rem;
+    }
 
-.badge {
-    display: inline-block;
-    background: rgba(255,255,255,0.16);
-    color: #ffffff;
-    padding: 6px 12px;
-    border-radius: 999px;
-    font-size: 13px;
-    font-weight: 600;
-    margin-bottom: 14px;
-    border: 1px solid rgba(255,255,255,0.18);
-}
+    /* =====================================================
+       HERO
+    ===================================================== */
+    .hero-box {
+        background:
+            radial-gradient(circle at 15% 20%, rgba(96, 165, 250, 0.18), transparent 22%),
+            linear-gradient(135deg, #08101f 0%, #0c1730 35%, #12264f 70%, #1d4ed8 100%);
+        padding: 36px 38px;
+        border-radius: 28px;
+        margin-bottom: 22px;
+        box-shadow: 0 22px 44px rgba(0, 0, 0, 0.34);
+        border: 1px solid rgba(255,255,255,0.08);
+        overflow: hidden;
+    }
 
-.section-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: #0f172a;
-    margin-bottom: 8px;
-}
+    .hero-badge {
+        display: inline-block;
+        background: rgba(255,255,255,0.10);
+        color: #ffffff;
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        border: 1px solid rgba(255,255,255,0.10);
+    }
 
-.custom-card {
-    background: #ffffff;
-    padding: 22px;
-    border-radius: 20px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
-    margin-bottom: 20px;
-}
+    .hero-title {
+        color: #ffffff;
+        font-size: 46px;
+        font-weight: 850;
+        line-height: 1.08;
+        margin-bottom: 12px;
+    }
 
-[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-}
+    .hero-subtitle {
+        color: #dbeafe;
+        font-size: 17px;
+        line-height: 1.75;
+        max-width: 930px;
+    }
 
-[data-testid="stSidebar"] * {
-    color: #f8fafc !important;
-}
+    /* =====================================================
+       BENEFÍCIOS
+    ===================================================== */
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin-top: 8px;
+        margin-bottom: 22px;
+    }
 
-.sidebar-card {
-    background: rgba(255,255,255,0.08);
-    padding: 18px;
-    border-radius: 18px;
-    border: 1px solid rgba(255,255,255,0.10);
-    margin-top: 12px;
-}
+    .feature-card {
+        background: rgba(12, 23, 48, 0.82);
+        border: 1px solid rgba(148, 163, 184, 0.14);
+        border-radius: 20px;
+        padding: 18px;
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
+        backdrop-filter: blur(8px);
+    }
 
-.stTextInput > div > div > input,
-.stTextArea textarea {
-    border-radius: 14px !important;
-    border: 1px solid #cbd5e1 !important;
-    background-color: #ffffff !important;
-    padding: 12px 14px !important;
-    font-size: 15px !important;
-}
+    .feature-title {
+        color: #f8fbff;
+        font-size: 15px;
+        font-weight: 800;
+        margin-bottom: 6px;
+    }
 
-.stTextInput > div > div > input:focus,
-.stTextArea textarea:focus {
-    border: 1px solid #2563eb !important;
-    box-shadow: 0 0 0 1px #2563eb !important;
-}
+    .feature-text {
+        color: #b8c7e6;
+        font-size: 13px;
+        line-height: 1.6;
+    }
 
-div[data-baseweb="select"] > div {
-    border-radius: 14px !important;
-    border: 1px solid #cbd5e1 !important;
-    min-height: 48px !important;
-}
+    /* =====================================================
+       SIDEBAR
+    ===================================================== */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #050b16 0%, #0b1730 100%);
+        border-right: 1px solid rgba(255,255,255,0.06);
+    }
 
-.stButton > button {
-    width: 100%;
-    background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);
-    color: white;
-    font-weight: 700;
-    font-size: 16px;
-    border: none;
-    border-radius: 14px;
-    padding: 14px 18px;
-    box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
-    transition: all 0.2s ease-in-out;
-}
+    [data-testid="stSidebar"] * {
+        color: #f8fafc !important;
+    }
 
-.stButton > button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 10px 22px rgba(37, 99, 235, 0.32);
-    background: linear-gradient(90deg, #1d4ed8 0%, #1e3a8a 100%);
-}
+    /* =====================================================
+       TÍTULOS
+    ===================================================== */
+    .section-heading {
+        font-size: 24px;
+        font-weight: 850;
+        color: #f8fbff;
+        margin-top: 6px;
+        margin-bottom: 4px;
+    }
 
-.streamlit-expanderHeader {
-    font-size: 16px;
-    font-weight: 700;
-    color: #0f172a;
-}
+    .section-desc {
+        font-size: 14px;
+        color: #9db0d4;
+        margin-bottom: 18px;
+        line-height: 1.55;
+    }
 
-.metric-card {
-    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-    border: 1px solid #bfdbfe;
-    padding: 16px;
-    border-radius: 18px;
-    text-align: center;
-    margin-bottom: 14px;
-}
+    /* =====================================================
+       CONTAINERS NATIVOS
+    ===================================================== */
+    div[data-testid="stVerticalBlockBorderWrapper"] {
+        background: rgba(10, 18, 35, 0.84);
+        border: 1px solid rgba(148, 163, 184, 0.12);
+        border-radius: 22px;
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(8px);
+        padding: 8px;
+    }
 
-.metric-title {
-    font-size: 13px;
-    color: #334155;
-    margin-bottom: 6px;
-    font-weight: 600;
-}
+    /* =====================================================
+       LABELS / TEXTOS
+    ===================================================== */
+    label {
+        color: #dbe7fb !important;
+        font-weight: 650 !important;
+    }
 
-.metric-value {
-    font-size: 28px;
-    font-weight: 800;
-    color: #1d4ed8;
-}
+    .stMarkdown p,
+    .stCaption,
+    .stText {
+        color: #dbe7fb !important;
+    }
 
-.tag {
-    display: inline-block;
-    background: #ecfdf5;
-    color: #065f46;
-    border: 1px solid #a7f3d0;
-    border-radius: 999px;
-    padding: 6px 10px;
-    font-size: 12px;
-    font-weight: 700;
-    margin-top: 8px;
-}
-</style>
-""", unsafe_allow_html=True)
+    /* =====================================================
+       INPUTS / TEXTAREAS / CURSOR VISÍVEL
+    ===================================================== */
+    .stTextInput > div > div > input,
+    .stTextArea textarea {
+        background: #0d1729 !important;
+        color: #f8fbff !important;
+        border: 1px solid #29406d !important;
+        border-radius: 16px !important;
+        padding: 14px 16px !important;
+        font-size: 15px !important;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.03), 0 4px 12px rgba(0, 0, 0, 0.16);
+        caret-color: #60a5fa !important;
+    }
 
-# =============================
+    .stTextInput > div > div > input:focus,
+    .stTextArea textarea:focus {
+        border: 1px solid #3b82f6 !important;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18) !important;
+        caret-color: #93c5fd !important;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+        color: #7f93b8 !important;
+        opacity: 1 !important;
+    }
+
+    /* =====================================================
+       FILE UPLOADER
+    ===================================================== */
+    [data-testid="stFileUploader"] {
+        background: rgba(13, 23, 41, 0.9);
+        border: 1.5px dashed #38548a;
+        border-radius: 18px;
+        padding: 14px;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+    }
+
+    [data-testid="stFileUploader"] section {
+        padding: 8px !important;
+    }
+
+    [data-testid="stFileUploader"] small,
+    [data-testid="stFileUploader"] span,
+    [data-testid="stFileUploader"] div {
+        color: #d9e7ff !important;
+    }
+
+    /* =====================================================
+       BOTÃO
+    ===================================================== */
+    .stButton > button {
+        width: 100%;
+        background: linear-gradient(90deg, #0a1836 0%, #163b8c 52%, #2563eb 100%);
+        color: white !important;
+        border: none !important;
+        border-radius: 18px !important;
+        padding: 16px 18px !important;
+        font-size: 16px !important;
+        font-weight: 800 !important;
+        box-shadow: 0 14px 26px rgba(0, 0, 0, 0.24);
+        transition: all 0.22s ease;
+    }
+
+    .stButton > button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 18px 30px rgba(0, 0, 0, 0.30);
+        background: linear-gradient(90deg, #08101f 0%, #123373 58%, #1d4ed8 100%);
+    }
+
+    /* =====================================================
+       KPI CARDS
+    ===================================================== */
+    .kpi-box {
+        background: linear-gradient(180deg, rgba(12, 23, 48, 0.96) 0%, rgba(10, 18, 35, 0.96) 100%);
+        border: 1px solid rgba(148, 163, 184, 0.14);
+        border-radius: 20px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
+    }
+
+    .kpi-label {
+        font-size: 13px;
+        font-weight: 750;
+        color: #9fb3d8;
+        margin-bottom: 6px;
+    }
+
+    .kpi-value {
+        font-size: 30px;
+        font-weight: 900;
+        color: #f8fbff;
+    }
+
+    /* =====================================================
+       MELHOR CANDIDATO
+    ===================================================== */
+    .winner-card {
+        background:
+            radial-gradient(circle at top right, rgba(96, 165, 250, 0.14), transparent 28%),
+            linear-gradient(135deg, #08101f 0%, #0d1e3f 62%, #18439b 100%);
+        border-radius: 24px;
+        border: 1px solid rgba(255,255,255,0.08);
+        padding: 24px;
+        box-shadow: 0 18px 34px rgba(0, 0, 0, 0.28);
+        margin-top: 8px;
+        margin-bottom: 18px;
+    }
+
+    .winner-eyebrow {
+        display: inline-block;
+        background: rgba(255,255,255,0.12);
+        color: #ffffff;
+        border: 1px solid rgba(255,255,255,0.10);
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 14px;
+    }
+
+    .winner-title {
+        color: #ffffff;
+        font-size: 24px;
+        font-weight: 850;
+        margin-bottom: 8px;
+    }
+
+    .winner-subtitle {
+        color: #dbeafe;
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 16px;
+    }
+
+    .winner-metrics {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-top: 6px;
+    }
+
+    .winner-metric {
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 18px;
+        padding: 14px;
+    }
+
+    .winner-metric-label {
+        color: #c7ddff;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+
+    .winner-metric-value {
+        color: #ffffff;
+        font-size: 22px;
+        font-weight: 850;
+    }
+
+    /* =====================================================
+       EXPANDERS
+    ===================================================== */
+    .streamlit-expanderHeader {
+        font-size: 15px;
+        font-weight: 850;
+        color: #f8fbff;
+    }
+
+    /* =====================================================
+       ALERTAS
+    ===================================================== */
+    [data-testid="stSuccessMessage"],
+    [data-testid="stWarning"],
+    [data-testid="stInfo"] {
+        border-radius: 16px;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        background: rgba(10, 18, 35, 0.92);
+        color: #f8fbff !important;
+    }
+
+    /* =====================================================
+       TAGS
+    ===================================================== */
+    .tag-high, .tag-medium, .tag-low {
+        display: inline-block;
+        border-radius: 999px;
+        padding: 7px 12px;
+        font-size: 12px;
+        font-weight: 850;
+        margin-bottom: 10px;
+    }
+
+    .tag-high {
+        background: rgba(16, 185, 129, 0.14);
+        border: 1px solid rgba(16, 185, 129, 0.28);
+        color: #9ae6bf;
+    }
+
+    .tag-medium {
+        background: rgba(245, 158, 11, 0.12);
+        border: 1px solid rgba(245, 158, 11, 0.28);
+        color: #fcd34d;
+    }
+
+    .tag-low {
+        background: rgba(239, 68, 68, 0.10);
+        border: 1px solid rgba(239, 68, 68, 0.22);
+        color: #fca5a5;
+    }
+
+    /* =====================================================
+       JSON / TEXTAREA VISUAL
+    ===================================================== */
+    pre, code {
+        color: #e5eefc !important;
+    }
+
+    /* =====================================================
+       RODAPÉ
+    ===================================================== */
+    .caption-center {
+        text-align: center;
+        color: #95a8cb;
+        font-size: 13px;
+        margin-top: 26px;
+    }
+
+    .stTextInput, .stTextArea, .stFileUploader {
+        margin-bottom: 12px;
+    }
+
+    @media (max-width: 900px) {
+        .feature-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .winner-metrics {
+            grid-template-columns: 1fr;
+        }
+
+        .hero-title {
+            font-size: 36px;
+        }
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
+# =========================================================
 # FUNÇÕES
-# =============================
+# =========================================================
 def extract_text(file_name: str, file_bytes: bytes) -> str:
     name = file_name.lower()
 
-    if name.endswith('.pdf') and PdfReader is not None:
+    if name.endswith(".pdf") and PdfReader is not None:
         reader = PdfReader(io.BytesIO(file_bytes))
         pages = []
-        for p in reader.pages:
+        for page in reader.pages:
             try:
-                pages.append(p.extract_text() or "")
+                pages.append(page.extract_text() or "")
             except Exception:
                 pages.append("")
-        return "\\n".join(pages).strip()
+        return "\n".join(pages).strip()
 
-    if name.endswith('.docx') and docx is not None:
-        d = docx.Document(io.BytesIO(file_bytes))
-        return "\\n".join(p.text for p in d.paragraphs).strip()
+    if name.endswith(".docx") and docx is not None:
+        document = docx.Document(io.BytesIO(file_bytes))
+        return "\n".join(paragraph.text for paragraph in document.paragraphs).strip()
 
-    for enc in ('utf-8', 'latin-1'):
+    for encoding in ("utf-8", "latin-1"):
         try:
-            return file_bytes.decode(enc, errors='ignore').strip()
+            return file_bytes.decode(encoding, errors="ignore").strip()
         except Exception:
             pass
+
     return ""
 
 
-def mask_personal_data(text: str, candidate_name: str = "", company_name: str = "") -> Tuple[str, Dict[str, int]]:
+def mask_personal_data(
+    text: str,
+    candidate_name: str = "",
+    company_name: str = ""
+) -> Tuple[str, Dict[str, int]]:
     counts = {
         "emails": 0,
         "telefones": 0,
@@ -229,34 +493,35 @@ def mask_personal_data(text: str, candidate_name: str = "", company_name: str = 
     masked = text
 
     patterns = [
-        (r"\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\\b", "[EMAIL_REMOVIDO]", "emails"),
-        (r"(\\+?55\\s*)?(\\(?\\d{2}\\)?\\s*)?(9?\\d{4})[-\\s]?(\\d{4})", "[TELEFONE_REMOVIDO]", "telefones"),
-        (r"\\b(https?://\\S+|www\\.\\S+)\\b", "[LINK_REMOVIDO]", "links"),
-        (r"\\b\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}\\b|\\b\\d{11}\\b", "[CPF_REMOVIDO]", "cpf"),
-        (r"\\b(rua|avenida|av\\.|travessa|alameda|praça|rodovia)\\b[^\\n]{0,80}\\b\\d{1,6}\\b", "[ENDERECO_REMOVIDO]", "enderecos"),
+        (r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b", "[EMAIL_REMOVIDO]", "emails"),
+        (r"(\+?55\s*)?(\(?\d{2}\)?\s*)?(9?\d{4})[-\s]?(\d{4})", "[TELEFONE_REMOVIDO]", "telefones"),
+        (r"\b(https?://\S+|www\.\S+)\b", "[LINK_REMOVIDO]", "links"),
+        (r"\b\d{3}\.\d{3}\.\d{3}-\d{2}\b|\b\d{11}\b", "[CPF_REMOVIDO]", "cpf"),
+        (r"\b(rua|avenida|av\.|travessa|alameda|praça|rodovia)\b[^\n]{0,80}\b\d{1,6}\b", "[ENDERECO_REMOVIDO]", "enderecos"),
     ]
 
-    for pat, repl, key in patterns:
-        regex = re.compile(pat, re.IGNORECASE)
-        masked, n = regex.subn(repl, masked)
-        counts[key] += n
+    for pattern, replacement, key in patterns:
+        regex = re.compile(pattern, re.IGNORECASE)
+        masked, matches = regex.subn(replacement, masked)
+        counts[key] += matches
 
     if candidate_name.strip():
         regex = re.compile(re.escape(candidate_name.strip()), re.IGNORECASE)
-        masked, n = regex.subn("[NOME_REMOVIDO]", masked)
-        counts["nome"] += n
+        masked, matches = regex.subn("[NOME_REMOVIDO]", masked)
+        counts["nome"] += matches
 
     if company_name.strip():
         regex = re.compile(re.escape(company_name.strip()), re.IGNORECASE)
-        masked, n = regex.subn("[EMPRESA_REMOVIDA]", masked)
-        counts["empresa"] += n
+        masked, matches = regex.subn("[EMPRESA_REMOVIDA]", masked)
+        counts["empresa"] += matches
 
     return masked, counts
 
 
 def fit_score(cv_text: str, job_text: str) -> float:
-    if TfidfVectorizer is None:
+    if TfidfVectorizer is None or cosine_similarity is None:
         return 0.0
+
     docs = [job_text, cv_text]
     vectorizer = TfidfVectorizer(ngram_range=(1, 2), max_features=4000)
     matrix = vectorizer.fit_transform(docs)
@@ -265,142 +530,312 @@ def fit_score(cv_text: str, job_text: str) -> float:
 
 
 def keyword_match(cv_text: str, keywords: str):
-    items = [k.strip().lower() for k in keywords.split(',') if k.strip()]
+    items = [item.strip().lower() for item in keywords.split(",") if item.strip()]
     text = cv_text.lower()
-    found = [k for k in items if re.search(r"\\b" + re.escape(k) + r"\\b", text)]
+    found = [item for item in items if re.search(r"\b" + re.escape(item) + r"\b", text)]
     return len(found), len(items), found
 
 
-# =============================
-# INTERFACE
-# =============================
-st.markdown("""
-<div class="hero">
-    <div class="badge">MVP • Recrutamento Inteligente</div>
-    <h1>🟢 SKILLMATCH AI</h1>
-    <p>
-        Plataforma de análise curricular com anonimização de dados e cálculo de aderência
-        entre candidato e vaga, promovendo mais eficiência e redução de vieses na triagem inicial.
-    </p>
-</div>
-""", unsafe_allow_html=True)
+def render_fit_tag(score: float):
+    if score >= 70:
+        st.markdown('<div class="tag-high">Alta aderência</div>', unsafe_allow_html=True)
+    elif score >= 40:
+        st.markdown('<div class="tag-medium">Aderência moderada</div>', unsafe_allow_html=True)
+    else:
+        st.markdown('<div class="tag-low">Baixa aderência</div>', unsafe_allow_html=True)
 
+
+# =========================================================
+# HERO
+# =========================================================
+st.markdown(
+    """
+    <div class="hero-box">
+        <div class="hero-badge">• Recrutamento Inteligente</div>
+        <div class="hero-title">🟢 SKILLMATCH AI</div>
+        <div class="hero-subtitle">
+            Plataforma de triagem curricular com anonimização de dados e análise de aderência entre candidato e vaga,
+            apoiando uma avaliação mais eficiente, estruturada e com menor viés inicial.
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# =========================================================
+# BENEFÍCIOS
+# =========================================================
+st.markdown(
+    """
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="feature-title">Anonimização Inteligente</div>
+            <div class="feature-text">
+                Redução de vieses na triagem inicial por meio da remoção automática de dados sensíveis do currículo.
+            </div>
+        </div>
+        <div class="feature-card">
+            <div class="feature-title">Matching com Aderência</div>
+            <div class="feature-text">
+                Comparação entre currículo e vaga com score percentual, análise textual e conferência por palavras-chave.
+            </div>
+        </div>
+        <div class="feature-card">
+            <div class="feature-title">Ranking para Decisão</div>
+            <div class="feature-text">
+                Organização dos candidatos por relevância para apoiar uma triagem mais rápida, clara e objetiva.
+            </div>
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+
+# =========================================================
+# SIDEBAR
+# =========================================================
 with st.sidebar:
     st.markdown("## Sobre o projeto")
-    st.markdown("""
-    <div class="sidebar-card">
-        <strong>SKILLMATCH AI</strong><br><br>
-        Este MVP demonstra uma plataforma web voltada à triagem inicial de currículos,
-        com foco em anonimização de dados pessoais e análise de compatibilidade com vagas.
-    </div>
-    """, unsafe_allow_html=True)
+    st.write(
+        "O SKILLMATCH AI é um MVP acadêmico voltado à triagem inicial de currículos, "
+        "com foco em anonimização, aderência à vaga e apoio à decisão."
+    )
 
-    st.markdown("### Benefícios")
+    st.markdown("### Funcionalidades")
     st.markdown("""
-    - Triagem mais justa  
-    - Apoio à decisão no recrutamento  
-    - Redução de vieses iniciais  
-    - Estrutura pronta para evolução com IA  
+    - Anonimização de dados pessoais  
+    - Matching entre currículo e vaga  
+    - Análise por palavras-chave  
+    - Ranking de aderência  
+    - Visualização comparativa para demonstração  
     """)
 
-col1, col2 = st.columns(2)
+    st.markdown("### Onde está a IA?")
+    st.write(
+        "A inteligência do sistema está no matching textual entre o conteúdo do currículo "
+        "e a descrição da vaga, além da análise por palavras-chave e aderência."
+    )
+
+    if TfidfVectorizer is None:
+        st.info("Se o fit aparecer 0%, instale o pacote scikit-learn.")
+
+
+descricao_padrao = (
+    "Responsável por suporte a sistemas corporativos, análise de incidentes, atendimento ao usuário, "
+    "documentação e melhoria contínua.\n\n"
+    "Requisitos: SQL básico, noções de ERP, boa comunicação, troubleshooting e ITIL."
+)
+
+if "desc_vaga" not in st.session_state:
+    st.session_state.desc_vaga = descricao_padrao
+
+
+# =========================================================
+# FORMULÁRIO
+# =========================================================
+col1, col2 = st.columns([1, 1], gap="large")
 
 with col1:
-    st.markdown('<div class="custom-card">', unsafe_allow_html=True)
-    st.markdown('<div class="section-title">1) Dados da vaga</div>', unsafe_allow_html=True)
+    with st.container(border=True):
+        st.markdown('<div class="section-heading">1) Dados da vaga</div>', unsafe_allow_html=True)
+        st.markdown(
+            '<div class="section-desc">Defina os critérios usados na comparação dos currículos.</div>',
+            unsafe_allow_html=True
+        )
 
-    vaga = st.text_input("Título da vaga", value="Analista de Suporte / Sustentação")
-    desc_vaga = st.text_area(
-        "Descrição da vaga",
-        value=(
-            "Responsável por suporte a sistemas corporativos, análise de incidentes, atendimento ao usuário, "
-            "documentação, e melhoria contínua.\\n\\n"
-            "Requisitos: SQL básico, noções de ERP, boa comunicação, troubleshooting, ITIL."
-        ),
-        height=180,
-    )
-    palavras = st.text_input(
-        "Palavras-chave (separadas por vírgula)",
-        value="SQL, ERP, ITIL, troubleshooting, atendimento, documentação",
-    )
-    st.markdown('</div>', unsafe_allow_html=True)
+        vaga = st.text_input(
+            "Título da vaga",
+            value="Analista de Suporte / Sustentação"
+        )
+
+        desc_vaga = st.text_area(
+    "Descrição da vaga",
+    key="desc_vaga",
+    height=220
+)
+
+        palavras = st.text_input(
+            "Palavras-chave (separadas por vírgula)",
+            value="SQL, ERP, ITIL, troubleshooting, atendimento, documentação"
+        )
 
 with col2:
-    st.markdown('<div class="custom-card">', unsafe_allow_html=True)
-    st.markdown('<div class="section-title">2) Currículos</div>', unsafe_allow_html=True)
+    with st.container(border=True):
+        st.markdown('<div class="section-heading">2) Currículos</div>', unsafe_allow_html=True)
+        st.markdown(
+            '<div class="section-desc">Envie arquivos PDF, DOCX ou TXT para análise.</div>',
+            unsafe_allow_html=True
+        )
 
-    files = st.file_uploader(
-        "Envie arquivos .pdf, .docx ou .txt",
-        type=["pdf", "docx", "txt"],
-        accept_multiple_files=True,
-    )
+        files = st.file_uploader(
+            "Envie arquivos .pdf, .docx ou .txt",
+            type=["pdf", "docx", "txt"],
+            accept_multiple_files=True
+        )
 
-    st.markdown("**Opcional para melhorar a anonimização**")
-    candidate_name = st.text_input("Nome do candidato (opcional)")
-    company_name = st.text_input("Empresa/Instituição a mascarar (opcional)")
-    st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown("### Anonimização")
+        candidate_name = st.text_input("Nome do candidato (opcional)")
+        company_name = st.text_input("Empresa/Instituição a mascarar (opcional)")
 
+
+st.write("")
+
+# =========================================================
+# BOTÃO E RESULTADO
+# =========================================================
 if st.button("Analisar currículos", type="primary", use_container_width=True):
     if not files:
         st.warning("Envie pelo menos um currículo para analisar.")
     else:
         resultados = []
-        for f in files:
-            original = extract_text(f.name, f.getvalue())
+
+        for file in files:
+            original = extract_text(file.name, file.getvalue())
             anonimizado, contagem = mask_personal_data(original, candidate_name, company_name)
             score = fit_score(anonimizado, desc_vaga)
             achadas, total, lista = keyword_match(anonimizado, palavras)
 
-            resultados.append({
-                "arquivo": f.name,
-                "score": round(score, 1),
-                "keywords": f"{achadas}/{total}",
-                "lista": ", ".join(lista) if lista else "-",
-                "contagem": contagem,
-                "anonimizado": anonimizado,
-                "original": original,
-            })
+            resultados.append(
+                {
+                    "arquivo": file.name,
+                    "score": round(score, 1),
+                    "keywords_encontradas": achadas,
+                    "keywords_total": total,
+                    "keywords_ratio": f"{achadas}/{total}",
+                    "lista": ", ".join(lista) if lista else "-",
+                    "contagem": contagem,
+                    "anonimizado": anonimizado,
+                    "original": original,
+                }
+            )
 
-        resultados.sort(key=lambda x: x["score"], reverse=True)
+        resultados.sort(key=lambda item: item["score"], reverse=True)
+
+        melhor_fit = resultados[0]["score"] if resultados else 0
+        media_fit = round(sum(item["score"] for item in resultados) / len(resultados), 1) if resultados else 0
+        total_arquivos = len(resultados)
+        top_resultado = resultados[0] if resultados else None
 
         st.success("Análise concluída com sucesso!")
-        st.subheader("3) Ranking dos currículos")
 
-        for i, r in enumerate(resultados, start=1):
-            with st.expander(f"#{i} — {r['arquivo']} | Fit: {r['score']}% | Keywords: {r['keywords']}", expanded=(i == 1)):
-                st.progress(min(int(r["score"]), 100))
+        k1, k2, k3 = st.columns(3)
 
-                if r["score"] >= 70:
-                    st.markdown('<div class="tag">Alta aderência</div>', unsafe_allow_html=True)
-                elif r["score"] >= 40:
-                    st.markdown(
-                        '<div class="tag" style="background:#fff7ed;color:#9a3412;border:1px solid #fdba74;">Aderência moderada</div>',
-                        unsafe_allow_html=True
-                    )
-                else:
-                    st.markdown(
-                        '<div class="tag" style="background:#fef2f2;color:#991b1b;border:1px solid #fca5a5;">Baixa aderência</div>',
-                        unsafe_allow_html=True
-                    )
+        with k1:
+            st.markdown(
+                f"""
+                <div class="kpi-box">
+                    <div class="kpi-label">Currículos analisados</div>
+                    <div class="kpi-value">{total_arquivos}</div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
-                c1, c2 = st.columns(2)
+        with k2:
+            st.markdown(
+                f"""
+                <div class="kpi-box">
+                    <div class="kpi-label">Melhor fit</div>
+                    <div class="kpi-value">{melhor_fit}%</div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        with k3:
+            st.markdown(
+                f"""
+                <div class="kpi-box">
+                    <div class="kpi-label">Média de aderência</div>
+                    <div class="kpi-value">{media_fit}%</div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        st.write("")
+
+        if top_resultado is not None:
+            st.markdown(
+                f"""
+                <div class="winner-card">
+                    <div class="winner-eyebrow">Melhor aderência identificada</div>
+                    <div class="winner-title">{top_resultado['arquivo']}</div>
+                    <div class="winner-subtitle">
+                        Este currículo apresentou a melhor compatibilidade com a vaga informada,
+                        reunindo o maior score de aderência textual entre os arquivos analisados.
+                    </div>
+                    <div class="winner-metrics">
+                        <div class="winner-metric">
+                            <div class="winner-metric-label">Fit</div>
+                            <div class="winner-metric-value">{top_resultado['score']}%</div>
+                        </div>
+                        <div class="winner-metric">
+                            <div class="winner-metric-label">Keywords</div>
+                            <div class="winner-metric-value">{top_resultado['keywords_ratio']}</div>
+                        </div>
+                        <div class="winner-metric">
+                            <div class="winner-metric-label">Vaga</div>
+                            <div class="winner-metric-value" style="font-size:15px;">{vaga}</div>
+                        </div>
+                    </div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        st.markdown("## 3) Ranking dos currículos")
+        st.caption("Os currículos são ordenados automaticamente do maior para o menor nível de aderência com a vaga.")
+
+        for index, resultado in enumerate(resultados, start=1):
+            with st.expander(
+                f"#{index} — {resultado['arquivo']} | Fit: {resultado['score']}% | Keywords: {resultado['keywords_ratio']}",
+                expanded=(index == 1)
+            ):
+                render_fit_tag(resultado["score"])
+                st.progress(min(max(int(resultado["score"]), 0), 100))
+
+                c1, c2 = st.columns(2, gap="large")
 
                 with c1:
-                    st.markdown("**Resumo da análise**")
-                    st.write({
-                        "Vaga": vaga,
-                        "Fit": f"{r['score']}%",
-                        "Palavras-chave encontradas": r['keywords'],
-                        "Lista": r['lista'],
-                    })
-                    st.markdown("**Dados mascarados**")
-                    st.json(r["contagem"], expanded=False)
+                    with st.container(border=True):
+                        st.markdown("**Resumo da análise**")
+                        st.write(
+                            {
+                                "Vaga": vaga,
+                                "Fit": f"{resultado['score']}%",
+                                "Palavras-chave encontradas": resultado["keywords_ratio"],
+                                "Lista encontrada": resultado["lista"],
+                            }
+                        )
+
+                        st.markdown("**Dados mascarados**")
+                        st.json(resultado["contagem"], expanded=False)
 
                 with c2:
-                    st.markdown("**Currículo anonimizado**")
-                    st.text_area("", value=r["anonimizado"], height=260)
+                    with st.container(border=True):
+                        st.markdown("**Currículo anonimizado**")
+                        st.text_area(
+                            "Texto anonimizado",
+                            value=resultado["anonimizado"],
+                            height=260,
+                            key=f"anon_{index}"
+                        )
 
-                st.markdown("**Texto original (apenas para comparação na demo)**")
-                st.text_area(" ", value=r["original"], height=180)
+                st.markdown("**Texto original**")
+                st.text_area(
+                    "Texto original",
+                    value=resultado["original"],
+                    height=180,
+                    key=f"orig_{index}"
+                )
 
-st.divider()
+
+# =========================================================
+# RODAPÉ
+# =========================================================
+st.markdown(
+    '<div class="caption-center">SKILLMATCH AI • Recrutamento com Matching Inteligente</div>',
+    unsafe_allow_html=True
+)
